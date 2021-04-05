@@ -2,7 +2,7 @@ import React,{ useState, useEffect } from 'react';
 import {StyleSheet, View, Text, Button, SafeAreaView, TextInput, Alert} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Constants from 'expo-constants';
-import {Database} from './Database';
+import {Database} from '../Database';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
@@ -16,6 +16,7 @@ function AddParking(){
   const [location, setLocation] = React.useState(null);
   const parkingDate = new Date();
   const [geoAddress, setAddress] = React.useState(null);
+  var currentLocation = false;
 
 Database.createTable();
   const onClick = () => {

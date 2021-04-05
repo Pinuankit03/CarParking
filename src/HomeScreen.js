@@ -4,9 +4,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ParkingListScreen from './src/ParkingListScreen';
-import AddParking from './src/AddParking';
-import Profile from './src/Profile';
+import ParkingListScreen from './ParkingListScreen';
+import AddParking from './AddParking';
+import Profile from './Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +17,7 @@ function HomeScreen({route}){
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
-          if (route.name === 'ParkingList'){
+          if (route.name === 'ParkingListScreen'){
             iconName = focused ? 'list' : 'list-outline';
           }else if (route.name === 'AddParking'){
             iconName = focused ? 'add-circle' : 'add-circle-outline';
@@ -35,8 +35,7 @@ function HomeScreen({route}){
         inactiveTintColor: 'gray',
       }}
     >
-
-      <Tab.Screen name="ParkingList" component={ParkingListScreen}/>
+      <Tab.Screen name="ParkingListScreen" component={ParkingListScreen}/>
       <Tab.Screen name="AddParking" component={AddParking} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>

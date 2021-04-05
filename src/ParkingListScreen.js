@@ -1,8 +1,8 @@
 import React,{ useState, useEffect } from 'react';
 import {StyleSheet, View, Text, FlatList,Image, ActivityIndicator, Pressable} from 'react-native';
-import {Database} from './Database'
+import {Database} from '../Database'
 
-function ParkingListScreen({navigation, route}){
+function ParkingListScreen({navigation}){
 
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ function ParkingListScreen({navigation, route}){
             <View>
               <View style={styles.listitem}>
               <View style={styles.view}>
-              <Image style={styles.image} source={require('./assets/location.png')} />
+              <Image style={styles.image} source={require('../assets/location.png')} />
               <Text style={styles.address}> {item.street_address}</Text>
 
               </View>

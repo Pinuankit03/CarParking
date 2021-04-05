@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button,Image } from 'react-native';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-import {Database} from './Database'
+import {Database} from '../Database'
 
 function ParkingDetailScreen({navigation,route}) {
 const {id} = route.params;
@@ -69,7 +69,7 @@ return(
 <View>
 
 <View style={styles.view}>
-<Image style={styles.image} source={require('./assets/location.png')} />
+<Image style={styles.image} source={require('../assets/location.png')} />
 <Text style={styles.address}>{street_address}</Text>
 </View>
 
