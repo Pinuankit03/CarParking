@@ -3,11 +3,11 @@ import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import SignInScreen from './SignInScreen';
-import HomeScreen from './HomeScreen';
-import AddParking from './AddParking';
-import ParkingDetailScreen from './ParkingDetailScreen';
-import MapDetailScreen from './MapDetailScreen';
+import SignInScreen from './src/SignInScreen';
+import HomeScreen from './src/HomeScreen';
+import AddParking from './src/AddParking';
+import ParkingDetailScreen from './src/ParkingDetailScreen';
+import MapDetailScreen from './src/MapDetailScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator();

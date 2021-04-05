@@ -4,9 +4,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ParkingListScreen from './ParkingListScreen';
-import AddParking from './AddParking';
-import Profile from './Profile';
+import ParkingListScreen from './src/ParkingListScreen';
+import AddParking from './src/AddParking';
+import Profile from './src/Profile';
 
 const Tab = createBottomTabNavigator();
 
