@@ -19,13 +19,13 @@ function HomeScreen({route}){
 
           if (route.name === 'ParkingListScreen'){
             iconName = focused ? 'list' : 'list-outline';
+
           }else if (route.name === 'AddParking'){
             iconName = focused ? 'add-circle' : 'add-circle-outline';
           }
           else if (route.name === 'Profile'){
             iconName = focused ? 'person' : 'person-outline';
           }
-
           return <Ionicons name={iconName} size={size} color={color} />;
         }
       })
@@ -34,9 +34,11 @@ function HomeScreen({route}){
         activeTintColor: '#798AFF',
         inactiveTintColor: 'gray',
       }}
+
+
     >
-      <Tab.Screen name="ParkingListScreen" component={ParkingListScreen}/>
-      <Tab.Screen name="AddParking" component={AddParking} />
+      <Tab.Screen name="ParkingListScreen" component={ParkingListScreen} />
+      <Tab.Screen name="AddParking" component={AddParking}  />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

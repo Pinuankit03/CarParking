@@ -6,7 +6,6 @@ function ParkingListScreen({navigation}){
 
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
-
    useEffect(() => {
   Database.getData(setData);
  }, []);
@@ -27,7 +26,7 @@ function ParkingListScreen({navigation}){
 
               </View>
                 <Text style={styles.hourspark}> Parking Hours:  Maximum {item.hours_to_park} </Text>
-                <Text style={styles.hourspark}> Parking Date:  fix </Text>
+                <Text style={styles.hourspark}> Parking Date:  {item.parking_date} </Text>
                 <View style={styles.carPlateView} >
                   <Text style={styles.carPlate}>Car Plate No :  {item.car_plate_no} </Text>
                 </View>

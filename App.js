@@ -23,27 +23,24 @@ export default function App() {
       }}>
 
         <Stack.Screen name="SignIn"
-        component={SignInScreen}
-        initialParams={{email: "jk"}}
-        options={ ({route}) => ({email: route.params.email}) }/>
+        component={SignInScreen}/>
 
         <Stack.Screen name="HomeScreen"
         component={HomeScreen}
-        initialParams={{username: "JK"}}
-        options={ ({route}) => ({username: route.params.username}),
-        (
-            {navigation}) => (
+        options={
+        ({navigation}) => (
               { headerRight: () => (
                 <Ionicons name="power-outline"
               style={styles.image}
                 color="#798AFF" />
                 // <Button title="LogOut" color="#000" onPress={() => navigation.replace('SignIn')}/>
               )}
-            )
+            ),
+            {title: 'Parking List'}
         } />
         <Stack.Screen name="AddParking" component={AddParking} options={{title: 'Add Parking'}} />
-        <Stack.Screen name="ParkingDetailScreen" component={ParkingDetailScreen} options={{title: 'Parking Detail'}} />
-        <Stack.Screen name="MapDetailScreen" component={MapDetailScreen} options={{title: 'Route Detail'}} />
+        <Stack.Screen name="ParkingDetailScreen" component={ParkingDetailScreen} options={{title: ' '}} />
+        <Stack.Screen name="MapDetailScreen" component={MapDetailScreen} options={{title: 'Route'}} />
 
       </Stack.Navigator>
     </NavigationContainer>

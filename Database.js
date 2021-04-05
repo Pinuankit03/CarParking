@@ -5,7 +5,7 @@ const db = SQLite.openDatabase('db.carparking');
 const createTable = async () => {
   useEffect(() => {
     db.transaction(tx => {
-      tx.executeSql('create table if not exists parking (id INTEGER primary key not null, user_id INTEGER, building_code TEXT, car_plate_no TEXT, hours_to_park TEXT, suiteno TEXT, street_address TEXT, parking_date DATE, latitude DOUBLE, longitude DOUBLE)');
+      tx.executeSql('create table if not exists parking (id INTEGER primary key not null, user_id INTEGER, building_code TEXT, car_plate_no TEXT, hours_to_park TEXT, suiteno TEXT, street_address TEXT, parking_date TEXT, latitude DOUBLE, longitude DOUBLE)');
     });
   })
 }
@@ -18,9 +18,10 @@ const getData = (setData) => {
       (_, error) => onError
     );
     });
+    //getAllData();
 }
 
-// const getData = (setData) => {
+// const getAllData = () => {
 //   db.transaction(tx => {
 //     tx.executeSql(
 //       'select * from parking;',null,
@@ -28,7 +29,7 @@ const getData = (setData) => {
 //         console.log(result);
 //       },
 //       (_, error) => {
-//         console.log(console.error(););
+//         console.log(console.error());
 //       }
 //     );
 //     });

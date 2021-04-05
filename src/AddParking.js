@@ -5,6 +5,8 @@ import Constants from 'expo-constants';
 import {Database} from '../Database';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import moment from 'moment';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 function AddParking(){
   const [carPlateNo, setcarPlateNo] = useState('')
@@ -13,12 +15,16 @@ function AddParking(){
   const [suitNoHost, setsuitNoHost] = useState('')
   const [hours, setHours] = useState('1 Hour')
   const [data, setdata] = useState(null);
-  const [location, setLocation] = React.useState(null);
-  const parkingDate = new Date();
-  const [geoAddress, setAddress] = React.useState(null);
+  const [location, setLocation] = useState(null);
+  const [parkingDate, setparkingDate] = useState(new Date());
+  const [geoAddress, setAddress] = useState(null);
   var currentLocation = false;
+  var reverseCode = null;
+  const moment = require('moment');
+  var date = null;
 
 Database.createTable();
+
   const onClick = () => {
     console.log("Button click");
     console.log("carPlateNo", carPlateNo);
@@ -26,13 +32,10 @@ Database.createTable();
     console.log("parkingAddress", parkingAddress);
     console.log("suitNoHost", suitNoHost);
     console.log("hour", hours);
+    console.log("date", parkingDate);
 
-    const geocode  = async () => {
-      console.log("fetch coordinates");
-      let geoCode = await Location.geocodeAsync(geoAddress)
-      console.log(geoCode.latitude);
-      console.log(geoCode.longitude);
-    }
+      date = moment(parkingDate).format();
+        console.log("date", date);
 
     if(carPlateNo == null || buildingCode == null || parkingAddress == null|| suitNoHost== null){
       Alert.alert(
@@ -54,13 +57,30 @@ Database.createTable();
             'Alert!',
             'Please enter mininum 2 and maximum 5 character for Suit number of Host.');
           }
+          else if(parkingAddress == '' || parkingAddress == null){
+            Alert.alert(
+              'Alert!',
+              'Please enter your parking address.');
+            }
+
     else{
-        Database.insertData(1,buildingCode,carPlateNo,hours,suitNoHost,parkingAddress,parkingDate,0.0,0.0)
-        // Alert.alert(
-        //   'Alert!',
-        //   'Data inserted');
+        addData(parkingAddress);
     }
      }
+     //from address to lat long
+     const addData  = async (add) => {
+       console.log("fetch coordinates");
+       let geoCode = await Location.geocodeAsync(add)
+       console.log(geoCode[0].latitude);
+        console.log(geoCode[0].longitude);
+       Database.insertData(1,buildingCode,carPlateNo,hours,suitNoHost,parkingAddress,date,geoCode[0].latitude,geoCode[0].longitude)
+       setbuildingCode('')
+       setcarPlateNo('')
+       setsuitNoHost('')
+       setparkingAddress('')
+       Alert.alert('Alert!','Parking booked Successfully');
+     }
+
 
   const onLocationClick = () => {
       (async () => {
@@ -79,17 +99,30 @@ Database.createTable();
    }
    const getGeoAddress = async (loc) => {
        if(loc == null) return;
-
-       let reverseCode = await Location.reverseGeocodeAsync({
+        reverseCode = await Location.reverseGeocodeAsync({
          latitude : parseFloat(loc.latitude),
          longitude : parseFloat(loc.longitude)
        })
-       setparkingAddress(reverseCode)
-       console.log(reverseCode)
+      // setparkingAddress(reverseCode)
+       currentLocation = true;
+       inputChangeHandler();
+      // console.log(reverseCode)
    }
-
-
+   const inputChangeHandler = () => {
+     console.log("inputChangeHandler call");
+     if (currentLocation == true) {
+       console.log("reverseCode", reverseCode);
+       setparkingAddress(reverseCode);
+        console.log("parkingAddress", parkingAddress);
+      setparkingAddress(parkingAddress[0].name + "," + parkingAddress[0].city + "," + parkingAddress[0].country);
+     }else{
+    setparkingAddress(parkingAddress);
+   }
+   console.log("get data", parkingAddress);
+    };
   return(
+
+    <KeyboardAwareScrollView>
     <SafeAreaView style={styles.sectionContainer}>
           <TextInput
             style={styles.input}
@@ -137,9 +170,9 @@ Database.createTable();
                     placeholder = "Enter Parking Address"
                     placeholderTextColor = "gray"
                     returnKeyType = "next"
-                    value = {parkingAddress}
-                  //  value = {geoAddress ? `${geoAddress[0].name}, ${geoAddress[0].city}, ${geoAddress[0].country}` : ''}
-                    onChangeText = {setparkingAddress}
+                    onChangeText={(text) => setparkingAddress(text)}
+                    onChange={inputChangeHandler}
+                    value={parkingAddress}
                     multiline={true}
                     underlineColorAndroid='transparent' />
 
@@ -150,12 +183,12 @@ Database.createTable();
                     </View>
 
                     <View style={styles.buttonAdd}>
-                      <Button fontWeight= 'bold' color= '#FFFFFF' onPress={onClick} title="Add Parking" ></Button>
+                      <Button color= '#FFFFFF' onPress={onClick} title="Add Parking" ></Button>
                     </View>
 
 </SafeAreaView>
+</KeyboardAwareScrollView>
   );
-
 }
 
 const styles = StyleSheet.create({
@@ -198,6 +231,7 @@ buttonLoc:{
 buttonAdd:{
   backgroundColor: '#798AFF',
   borderRadius: 4,
+  fontWeight:'bold',
   width: '90%',
   height: 50,
   justifyContent: 'center',

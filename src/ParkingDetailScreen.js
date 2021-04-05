@@ -11,49 +11,10 @@ const {id} = route.params;
 const [location, setLocation] = useState(null);
 const [error, setError] = useState(null);
 
-const onClick = () => {
+const onClick = (latitude, longitude) => {
   console.log("Button click");
-  navigation.navigate('MapDetailScreen');
-
+  navigation.navigate('MapDetailScreen', { lat: items[0].latitude, long: items[0].longitude,});
 }
-// //use to get current location
-// useEffect(() => {
-//    (async () => {
-//      //IOS
-//      //let { status } = await Location.requestPermissionsAsync();
-//      //ANDROID
-//      let { status } = await Permissions.askAsync(Permissions.LOCATION);
-//      if (status !== 'granted') {
-//        setErrorMsg('Permission to access location was denied');
-//        return;
-//      }
-//      let location = await Location.getCurrentPositionAsync({});
-//      setLocation(location);
-//      getGeoAddress(location.coords);
-//
-//    })();
-//  }, []);
-
-// //convert coordinates to address (android give permission)
-// const getGeoAddress = async (loc) =>{
-//   if (location == null) {
-//     return;
-//   }
-//   let reverseCode = await Location.reverseGeocodeAsync({
-//     latitude : loc.latitude,
-//     longitude : loc.longitude
-//   })
-//   console.log(reverseCode);
-//   geocode();
-// }
-
-//from address to lat long
-const geocode  = async () => {
-  console.log("fetch coordinates");
-  let geoCode = await Location.geocodeAsync("Fairview mall", "Toronto")
-  console.log(geoCode);
-}
-
 
 const [items, setItems] = useState(null);
 Database.getDataById(id,setItems)
@@ -67,7 +28,7 @@ return(
     items.map(({ building_code, car_plate_no,hours_to_park, id,latitude, longitude, parking_date, street_address, suiteno, user_id }) => (
 
 <View>
-
+<Text style={styles.detail}>Parking Detail</Text>
 <View style={styles.view}>
 <Image style={styles.image} source={require('../assets/location.png')} />
 <Text style={styles.address}>{street_address}</Text>
@@ -98,10 +59,7 @@ return(
    <Button fontWeight= 'bold' color= '#FFFFFF' onPress={onClick} title="View your Parking Location" ></Button>
  </View>
 
-
 </View>
-
-
     ))
   }
 
@@ -116,7 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
       paddingHorizontal: 15,
-      paddingTop: Constants.statusBarHeight,
+      paddingTop: 18,
   },
   image:{
     height:28,
@@ -125,7 +83,7 @@ const styles = StyleSheet.create({
   },
   view:{
     height:50,
-    backgroundColor: "#8C91B0",
+    backgroundColor: "#20263c",
     borderRadius: 4,
     width: '100%',
     flexDirection: 'row',
@@ -178,12 +136,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   buttonView:{
-    backgroundColor: '#ffcc00',
+    backgroundColor: '#798AFF',
     borderRadius: 4,
     width: '100%',
     height: 50,
     justifyContent: 'center',
+    alignItems: 'center',
     marginTop:25,
+
+  },
+  detail:{
+fontSize:20,
+color:'#20263c',
+fontWeight:'bold',
+justifyContent: 'center',
+marginBottom:10,
 
   },
 
