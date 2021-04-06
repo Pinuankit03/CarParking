@@ -6,18 +6,39 @@ function ParkingListScreen({navigation}){
 
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
-   useEffect(() => {
+  const [isFetching, setIsFetching] = useState(false);
+
+  useEffect(() => {
   Database.getData(setData);
- }, []);
+  }, []);
+
+  const fetchData = () => {
+  Database.getData(setData);
+ setIsFetching(false);
+}
+
+ const onRefresh = () => {
+   setIsFetching(true);
+   fetchData();
+ };
+
+ const renderEmptyContainer = () => {
+   return(
+     <View>
+     <Text style={styles.noparking}>You dont have any parking booked yet.</Text>
+     </View>
+   );
+
+}
 
   return(
     <View style={styles.container}>
       <FlatList
-        data = {data}
+        data = {data.reverse()}
         keyExtractor = { (item, index) => {return item.car_plate_no;} }
+
         renderItem = { ({item}) => (
           <Pressable onPress={() => {navigation.navigate('ParkingDetailScreen', { id: item.id,});}}>
-
             <View>
               <View style={styles.listitem}>
               <View style={styles.view}>
@@ -25,17 +46,29 @@ function ParkingListScreen({navigation}){
               <Text style={styles.address}> {item.street_address}</Text>
 
               </View>
-                <Text style={styles.hourspark}> Parking Hours:  Maximum {item.hours_to_park} </Text>
-                <Text style={styles.hourspark}> Parking Date:  {item.parking_date} </Text>
+
+              <View style={styles.parkingdata}>
+              <Text style={styles.text}> Parking Hours: </Text>
+              <Text style={styles.textData}>  Maximum {item.hours_to_park} </Text>
+              </View>
+
+              <View style={styles.parkingdata}>
+              <Text style={styles.text}> Parking Date: </Text>
+              <Text style={styles.textData}>  {item.parking_date} </Text>
+              </View>
+
                 <View style={styles.carPlateView} >
                   <Text style={styles.carPlate}>Car Plate No :  {item.car_plate_no} </Text>
                 </View>
               </View>
             </View>
           </Pressable>
-        )
-
-      }/>
+        )}
+        onRefresh={onRefresh}
+        refreshing={isFetching}
+        progressViewOffset={100}
+        ListEmptyComponent={renderEmptyContainer()}
+        />
     </View>
   );
 }
@@ -59,11 +92,22 @@ const styles = StyleSheet.create({
     marginLeft:10,
     marginRight:10,
     marginBottom:10,
-    marginTop:5,
     borderColor:'#798AFF',
     borderWidth: 1,
-
   },
+  parkingdata:{
+    flexDirection: 'row',
+    marginTop:8,
+  },
+  text:{
+    fontSize:14,
+    fontWeight:'bold',
+  },
+  textData:{
+    fontSize:15,
+    textAlign: 'center',
+  },
+
   title: {
     fontSize: 20,
     color: '#123456',
@@ -71,13 +115,12 @@ const styles = StyleSheet.create({
   },
   hourspark: {
     fontSize: 15,
-    padding: 10,
+    padding: 5,
     color:'black',
   },
   address: {
     fontSize: 15,
     textAlign: 'center',
-    padding: 10,
     color:'black',
     fontWeight: 'bold',
   },
@@ -86,6 +129,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius:4,
     borderBottomRightRadius:4,
     padding: 6,
+    marginTop:8,
     alignItems:'center',
 },
 image:{
@@ -104,6 +148,11 @@ view:{
 carPlate:{
 fontSize: 15,
 color:'white',
+},
+noparking:{
+  alignItems:'center',
+  justifyContent:'center',
+  fontSize:15,
 },
 
 });

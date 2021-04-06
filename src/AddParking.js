@@ -118,11 +118,9 @@ Database.createTable();
      }else{
     setparkingAddress(parkingAddress);
    }
-   console.log("get data", parkingAddress);
-    };
+   console.log("get data", parkingAddress);};
+   
   return(
-
-    <KeyboardAwareScrollView>
     <SafeAreaView style={styles.sectionContainer}>
           <TextInput
             style={styles.input}
@@ -162,9 +160,7 @@ Database.createTable();
                    returnKeyType = "next"
                    value = {suitNoHost}
                    onChangeText = {setsuitNoHost} />
-
                   <Text style={styles.text}> Parking Address </Text>
-
                   <TextInput
                     style={styles.input}
                     placeholder = "Enter Parking Address"
@@ -179,15 +175,15 @@ Database.createTable();
                     <Text style={styles.textOR} > OR </Text>
 
                     <View style={styles.buttonLoc}>
-                    <Button color= '#FFFFFF' onPress={onLocationClick} title="Use Current Location">  </Button>
+                    <Button color= '#FFFFFF' onPress={onLocationClick} title="Use Current Location"></Button>
                     </View>
 
                     <View style={styles.buttonAdd}>
-                      <Button color= '#FFFFFF' onPress={onClick} title="Add Parking" ></Button>
+                      <Button color= '#FFFFFF' fontWeight = 'bold' onPress={onClick} title="Add Parking"></Button>
                     </View>
 
 </SafeAreaView>
-</KeyboardAwareScrollView>
+
   );
 }
 
@@ -231,7 +227,6 @@ buttonLoc:{
 buttonAdd:{
   backgroundColor: '#798AFF',
   borderRadius: 4,
-  fontWeight:'bold',
   width: '90%',
   height: 50,
   justifyContent: 'center',

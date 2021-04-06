@@ -44,14 +44,16 @@ return(
  </View>
 
  <View style={styles.parkingdata}>
+ <Text style={styles.text}> Suit No of Host </Text>
+ <Text style={styles.textData}> {suiteno} </Text>
+ </View>
+
+ <View style={styles.parkingdata}>
  <Text style={styles.text}> Parking Date </Text>
  <Text style={styles.textData}> {parking_date} </Text>
  </View>
 
- <View style={styles.parkingdata}>
- <Text style={styles.text}> Suit No of Host </Text>
- <Text style={styles.textData}> {suiteno} </Text>
- </View>
+
 
  <Text style={styles.carpark}> You can park your Car till {hours_to_park} </Text>
 
@@ -108,7 +110,8 @@ const styles = StyleSheet.create({
   text:{
     fontSize:18,
     marginTop:5,
-    fontWeight:'bold'
+    fontWeight:'bold',
+    marginRight:5,
   },
   carpark:{
     fontSize:18,
@@ -125,8 +128,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     borderWidth:1,
-    paddingLeft:15,
-    paddingRight:15,
+    paddingLeft:10,
+    paddingRight:10,
     paddingTop:5,
     paddingBottom:5,
   },
