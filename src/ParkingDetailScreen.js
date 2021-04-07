@@ -1,72 +1,80 @@
+//Student ID - 101334143
+//Student - Manisha Bathula
+
 import { StatusBar } from 'expo-status-bar';
-import React, {useEffect, useState} from 'react';
-import { StyleSheet, Text, View, Button,Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Button, Image,TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-import {Database} from '../Database'
+import { Database } from '../Database'
+import Header from './components/HeaderComponent';
 
-function ParkingDetailScreen({navigation,route}) {
-const {id} = route.params;
-const [location, setLocation] = useState(null);
-const [error, setError] = useState(null);
+function ParkingDetailScreen({ navigation, route }) {
+  const { id } = route.params;
+  const [location, setLocation] = useState(null);
+  const [error, setError] = useState(null);
+  const [items, setItems] = useState(null);
 
-const onClick = (latitude, longitude) => {
-  console.log("Button click");
-  navigation.navigate('MapDetailScreen', { lat: items[0].latitude, long: items[0].longitude,});
-}
-
-const [items, setItems] = useState(null);
-Database.getDataById(id,setItems)
-if (items === null || items.length === 0) {
-  return null;
-}
-return(
-  <View
-  style={styles.container}>
-  {
-    items.map(({ building_code, car_plate_no,hours_to_park, id,latitude, longitude, parking_date, street_address, suiteno, user_id }) => (
-
-<View>
-<Text style={styles.detail}>Parking Detail</Text>
-<View style={styles.view}>
-<Image style={styles.image} source={require('../assets/location.png')} />
-<Text style={styles.address}>{street_address}</Text>
-</View>
-
-<View style={styles.car}>
-<Text style={styles.cartext}> Car plate No : {car_plate_no} </Text>
- </View>
-
- <View style={styles.parkingdata}>
- <Text style={styles.text}> Building Code </Text>
- <Text style={styles.textData}> {building_code} </Text>
- </View>
-
- <View style={styles.parkingdata}>
- <Text style={styles.text}> Suit No of Host </Text>
- <Text style={styles.textData}> {suiteno} </Text>
- </View>
-
- <View style={styles.parkingdata}>
- <Text style={styles.text}> Parking Date </Text>
- <Text style={styles.textData}> {parking_date} </Text>
- </View>
-
-
-
- <Text style={styles.carpark}> You can park your Car till {hours_to_park} </Text>
-
- <View style={styles.buttonView}>
-   <Button fontWeight= 'bold' color= '#FFFFFF' onPress={onClick} title="View your Parking Location" ></Button>
- </View>
-
-</View>
-    ))
+  const onClick = (latitude, longitude) => {
+    console.log("Button click");
+    navigation.navigate('MapDetailScreen', { lat: items[0].latitude, long: items[0].longitude, });
   }
 
-  </View>
-);
+  Database.getDataByParkingId(id,setItems)
+  if (items === null || items.length === 0) {
+    return null;
+  }
+  return (
+    <>
+      {/* <Header
+        headerTitle={'Parking Details'}
+        userId={userId}
+      /> */}
+      <View
+        style={styles.container}>
+        {
+          items.map(({ building_code, car_plate_no, hours_to_park, id, latitude, longitude, parking_date, street_address, suiteno, user_id }) => (
+
+            <View>
+              <Text style={styles.detail}>Parking Detail</Text>
+              <View style={styles.view}>
+                <Image style={styles.image} source={require('../assets/location.png')} />
+                <Text style={styles.address}>{street_address}</Text>
+              </View>
+
+              <View style={styles.car}>
+                <Text style={styles.cartext}> Car plate No : {car_plate_no} </Text>
+              </View>
+
+              <View style={styles.parkingdata}>
+                <Text style={styles.text}> Building Code </Text>
+                <Text style={styles.textData}> {building_code} </Text>
+              </View>
+
+              <View style={styles.parkingdata}>
+                <Text style={styles.text}> Suit No of Host </Text>
+                <Text style={styles.textData}> {suiteno} </Text>
+              </View>
+
+              <View style={styles.parkingdata}>
+                <Text style={styles.text}> Parking Date </Text>
+                <Text style={styles.textData}> {parking_date} </Text>
+              </View>
+              <Text style={styles.carpark}> You can park your Car till {hours_to_park} </Text>
+
+              <TouchableOpacity style={styles.buttonView} onPress={onClick} >
+              <Text style={styles.textaddParking}> View your Parking Location </Text>
+              </TouchableOpacity>
+
+
+            </View>
+          ))
+        }
+
+      </View>
+    </>
+  );
 
 
 }
@@ -75,8 +83,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-      paddingHorizontal: 15,
-      paddingTop: 18,
+    paddingHorizontal: 15,
+    paddingTop: 18,
+    marginTop: 20,
+    paddingTop: Constants.statusBarHeight,
   },
   image:{
     height:28,
@@ -154,9 +164,14 @@ color:'#20263c',
 fontWeight:'bold',
 justifyContent: 'center',
 marginBottom:10,
-
+  },
+  textaddParking:{
+    color: 'white',
+    textAlign: 'center',
+    fontWeight:'bold',
+    fontSize:18,
   },
 
 });
 
- export default ParkingDetailScreen;
+export default ParkingDetailScreen;

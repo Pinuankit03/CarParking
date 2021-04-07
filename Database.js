@@ -1,3 +1,5 @@
+//Student ID - 101334143
+//Student - Manisha Bathula
 import React,{useEffect} from 'react';
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('db.carparking');
@@ -13,7 +15,7 @@ const createTable = async () => {
 const getData = (setData) => {
   db.transaction(tx => {
     tx.executeSql(
-      'select * from parking;',null,
+      'select * from parking ORDER BY id DESC;',null,
       (_, { rows: { _array } }) => setData(_array),
       (_, error) => onError
     );
@@ -44,35 +46,24 @@ const insertData = (userid,buildingCode,carPlateNo,hours,suitNoHost,parkingAddre
     null
   );
 }
-const getDataById = (id,setItems) => {
+const getDataById = (user_id,setData) => {
   db.transaction(tx => {
     tx.executeSql(
-      'select * from parking where id = ?;', [id],
-      (_, { rows: { _array } }) => setItems(_array),
+      'SELECT * FROM parking where user_id = ? ORDER BY id DESC', [user_id],
+      (_, { rows: { _array } }) => setData(_array),
       (_, error) => onError
       );
     });
 }
 
-const removeData = (id, setItems) => {
+const getDataByParkingId = (id,setItems) => {
   db.transaction(tx => {
-    tx.executeSql('delete from todoitems where id = ?;', [id],
-      (_, success) => {
-        getData(setItems)
-      },
+    tx.executeSql(
+      'SELECT * FROM parking where id = ?', [id],
+      (_, { rows: { _array } }) => setItems(_array),
       (_, error) => onError
-    );
-  });
-}
-
-const updateData = (id, isCompleted, setItems) => {
-    db.transaction(tx => {
-      tx.executeSql(`update todoitems set isCompleted = ? where id = ?;`, [isCompleted == 0 ? 1 : 0, id],
-      (_, success) => {
-        getData(setItems)
-      },
-      (_, error) => onError);
-    })
+      );
+    });
 }
 
 const onError = (_, error) => {
@@ -82,8 +73,7 @@ const onError = (_, error) => {
 export const Database = {
     createTable,
     insertData,
-    updateData,
     getData,
     getDataById,
-    removeData
+    getDataByParkingId,
 }

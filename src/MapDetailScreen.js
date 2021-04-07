@@ -1,3 +1,6 @@
+//Student ID - 101334143
+//Student - Manisha Bathula
+
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
@@ -5,11 +8,11 @@ import MapView, {Marker, Polyline} from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
-function MapDetailScreen({route}) {
+function MapDetailScreen({navigation,route}) {
   const {lat} = route.params;
   const {long} = route.params;
-  const [latitudeD, setlatitude] = useState('');
-  const [longitudeD, setlongitude] = useState('');
+  const [latitudeD, setlatitude] = useState(0.0);
+  const [longitudeD, setlongitude] = useState(0.0);
   const [loc, setLocation] = useState(null);
 
   console.log("lat" , lat);
@@ -22,13 +25,6 @@ function MapDetailScreen({route}) {
     longitudeDelta:2
   })
 
-  console.log("latitudeD" , latitudeD);
-  console.log("longitudeD" ,longitudeD);
-
-  const currentLoc = {  latitude : latitudeD, longitude :  longitudeD}
-  const destination = {  latitude : lat, longitude :  long }
-  const waterloo = {  latitude : 43.4643, longitude :  -80.5204 }
-
   useEffect(() => {
     (async () => {
       let {status} = await Permissions.askAsync(Permissions.LOCATION);
@@ -37,15 +33,27 @@ function MapDetailScreen({route}) {
         setErrorMsg('Permission to access location was denied');
         return;
       }
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.High});
       setLocation(location);
-            setlatitude(location.coords.latitude);
-              setlongitude(location.coords.longitude);
+      console.log("location get ", location);
+      setlatitude(location.coords.latitude);
+      setlongitude(location.coords.longitude);
       // console.log("lat data" , location.coords.latitude);
       // console.log("long data" ,location.coords.longitude);
     })();
   }, []);
 
+  const defaultCoordinates = {  latitude : 43.6532, longitude :  -79.3832 }
+  const currentLoc = {  latitude : latitudeD, longitude :  longitudeD}
+  const destination = {  latitude : lat, longitude :  long }
+  console.log("latitudeD" , latitudeD);
+  console.log("longitudeD" ,longitudeD);
+
+      // <MapViewDirections
+      //    origin={currentLoc}
+      //    destination={destination}
+      //    apikey={GOOGLE_MAPS_APIKEY}
+      //  />
 
   return (
     <View style={styles.container}>
@@ -59,11 +67,10 @@ function MapDetailScreen({route}) {
     pinColor = "red"
     title = "Current Location"
     description = "Current Location"
-    coordinate={currentLoc} />
-
+    coordinate={loc != null ? currentLoc : defaultCoordinates }/>
 
     <Marker
-    pinColor = "red"
+    pinColor = "blue"
     title = "Destination"
     description = "Destination Location"
     coordinate={destination} />
